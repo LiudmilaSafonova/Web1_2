@@ -1,0 +1,138 @@
+:root {
+    font-family: Arial, sans-serif;
+    color: #202124;
+    background-color: #f3f5f7;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    padding: 32px 16px;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+.todo-app {
+    width: min(100%, 760px);
+    margin: 0 auto;
+}
+
+.todo-app__header {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.todo-app__title {
+    margin: 0 0 8px;
+    font-size: 36px;
+}
+
+.todo-app__subtitle {
+    margin: 0;
+    color: #5f6368;
+}
+
+.todo-app__add-section,
+.todo-app__controls,
+.todo-app__tasks {
+    margin-bottom: 20px;
+    padding: 24px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 8%);
+}
+
+.todo-app h2 {
+    margin: 0 0 16px;
+    font-size: 20px;
+}
+
+.task-form,
+.todo-app__controls {
+    display: grid;
+    gap: 10px;
+}
+
+.task-form label,
+.todo-app__controls label {
+    font-weight: 600;
+}
+
+.task-form input,
+.todo-app__controls input,
+.todo-app__controls select {
+    width: 100%;
+    min-height: 42px;
+    padding: 9px 12px;
+    border: 1px solid #c7cbd1;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.task-form input:focus,
+.todo-app__controls input:focus,
+.todo-app__controls select:focus {
+    border-color: #4b68d1;
+    outline: 3px solid rgb(75 104 209 / 18%);
+}
+
+.button {
+    min-height: 42px;
+    margin-top: 6px;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.button--primary {
+    color: #ffffff;
+    background-color: #4b68d1;
+}
+
+.button--primary:hover {
+    background-color: #3d56af;
+}
+
+.todo-app__count,
+.todo-app__empty-message {
+    color: #5f6368;
+}
+
+.todo-app__empty-message {
+    margin: 28px 0;
+    text-align: center;
+}
+
+.task-list {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+@media (max-width: 520px) {
+    body {
+        padding: 16px 10px;
+    }
+
+    .todo-app__title {
+        font-size: 28px;
+    }
+
+    .todo-app__add-section,
+    .todo-app__controls,
+    .todo-app__tasks {
+        padding: 16px;
+    }
+}
