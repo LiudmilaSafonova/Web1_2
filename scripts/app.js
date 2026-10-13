@@ -236,3 +236,17 @@ function createTaskElement(task) {
 
     return taskElement;
 }
+
+function renderTasks() {
+    elements.taskList.replaceChildren();
+
+    tasks.forEach((task) => {
+        const taskElement = createTaskElement(task);
+        elements.taskList.append(taskElement);
+    });
+
+    elements.tasksCount.textContent = `Всего задач: ${tasks.length}`;
+    elements.emptyMessage.hidden = tasks.length > 0;
+}
+
+renderTasks();
