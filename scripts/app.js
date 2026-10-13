@@ -1,0 +1,175 @@
+function createAppLayout() {
+    const main = document.createElement('main');
+    main.className = 'todo-app';
+
+    const header = document.createElement('header');
+    header.className = 'todo-app__header';
+
+    const title = document.createElement('h1');
+    title.className = 'todo-app__title';
+    title.textContent = 'Список задач';
+
+    const subtitle = document.createElement('p');
+    subtitle.className = 'todo-app__subtitle';
+    subtitle.textContent = 'Планировщик дел';
+
+    header.append(title, subtitle);
+
+    const addTaskSection = document.createElement('section');
+    addTaskSection.className = 'todo-app__add-section';
+
+    const addTaskTitle = document.createElement('h2');
+    addTaskTitle.textContent = 'Новая задача';
+
+    const taskForm = document.createElement('form');
+    taskForm.className = 'task-form';
+    taskForm.id = 'task-form';
+
+    const titleLabel = document.createElement('label');
+    titleLabel.setAttribute('for', 'task-title');
+    titleLabel.textContent = 'Название задачи';
+
+    const titleInput = document.createElement('input');
+    titleInput.id = 'task-title';
+    titleInput.name = 'title';
+    titleInput.type = 'text';
+    titleInput.placeholder = 'Новая задача';
+    titleInput.autocomplete = 'off';
+    titleInput.required = true;
+
+    const dateLabel = document.createElement('label');
+    dateLabel.setAttribute('for', 'task-date');
+    dateLabel.textContent = 'Дата выполнения';
+
+    const dateInput = document.createElement('input');
+    dateInput.id = 'task-date';
+    dateInput.name = 'date';
+    dateInput.type = 'date';
+    dateInput.required = true;
+
+    const addButton = document.createElement('button');
+    addButton.className = 'button button--primary';
+    addButton.type = 'submit';
+    addButton.textContent = 'Добавить задачу';
+
+    taskForm.append(
+        titleLabel,
+        titleInput,
+        dateLabel,
+        dateInput,
+        addButton,
+    );
+    addTaskSection.append(addTaskTitle, taskForm);
+
+    const controlsSection = document.createElement('section');
+    controlsSection.className = 'todo-app__controls';
+
+    const controlsTitle = document.createElement('h2');
+    controlsTitle.textContent = 'Поиск и фильтры';
+
+    const searchLabel = document.createElement('label');
+    searchLabel.setAttribute('for', 'task-search');
+    searchLabel.textContent = 'Поиск по названию';
+
+    const searchInput = document.createElement('input');
+    searchInput.id = 'task-search';
+    searchInput.type = 'search';
+    searchInput.placeholder = 'Введите название задачи';
+    searchInput.autocomplete = 'off';
+
+    const filterLabel = document.createElement('label');
+    filterLabel.setAttribute('for', 'task-filter');
+    filterLabel.textContent = 'Статус';
+
+    const filterSelect = document.createElement('select');
+    filterSelect.id = 'task-filter';
+
+    const allTasksOption = document.createElement('option');
+    allTasksOption.value = 'all';
+    allTasksOption.textContent = 'Все задачи';
+
+    const activeTasksOption = document.createElement('option');
+    activeTasksOption.value = 'active';
+    activeTasksOption.textContent = 'Невыполненные';
+
+    const completedTasksOption = document.createElement('option');
+    completedTasksOption.value = 'completed';
+    completedTasksOption.textContent = 'Выполненные';
+
+    filterSelect.append(
+        allTasksOption,
+        activeTasksOption,
+        completedTasksOption,
+    );
+
+    const sortLabel = document.createElement('label');
+    sortLabel.setAttribute('for', 'task-sort');
+    sortLabel.textContent = 'Сортировка';
+
+    const sortSelect = document.createElement('select');
+    sortSelect.id = 'task-sort';
+
+    const manualSortOption = document.createElement('option');
+    manualSortOption.value = 'manual';
+    manualSortOption.textContent = 'Ручной порядок';
+
+    const dateAscendingOption = document.createElement('option');
+    dateAscendingOption.value = 'date-ascending';
+    dateAscendingOption.textContent = 'Сначала ближайшие';
+
+    const dateDescendingOption = document.createElement('option');
+    dateDescendingOption.value = 'date-descending';
+    dateDescendingOption.textContent = 'Сначала поздние';
+
+    sortSelect.append(
+        manualSortOption,
+        dateAscendingOption,
+        dateDescendingOption,
+    );
+
+    controlsSection.append(
+        controlsTitle,
+        searchLabel,
+        searchInput,
+        filterLabel,
+        filterSelect,
+        sortLabel,
+        sortSelect,
+    );
+
+    const tasksSection = document.createElement('section');
+    tasksSection.className = 'todo-app__tasks';
+
+    const tasksTitle = document.createElement('h2');
+    tasksTitle.textContent = 'Задачи';
+
+    const tasksCount = document.createElement('p');
+    tasksCount.className = 'todo-app__count';
+    tasksCount.textContent = 'Всего задач: 0';
+
+    const emptyMessage = document.createElement('p');
+    emptyMessage.className = 'todo-app__empty-message';
+    emptyMessage.textContent = 'Задач пока нет';
+
+    const taskList = document.createElement('ul');
+    taskList.className = 'task-list';
+    taskList.id = 'task-list';
+
+    tasksSection.append(tasksTitle, tasksCount, emptyMessage, taskList);
+    main.append(header, addTaskSection, controlsSection, tasksSection);
+    document.body.prepend(main);
+
+    return {
+        taskForm,
+        titleInput,
+        dateInput,
+        searchInput,
+        filterSelect,
+        sortSelect,
+        tasksCount,
+        emptyMessage,
+        taskList,
+    };
+}
+
+const elements = createAppLayout();
