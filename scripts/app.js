@@ -173,3 +173,66 @@ function createAppLayout() {
 }
 
 const elements = createAppLayout();
+
+let tasks = [
+    {
+        id: 1,
+        title: 'Изучить js',
+        date: '2026-10-15',
+        completed: false,
+    },
+];
+
+function createTaskElement(task) {
+    const taskElement = document.createElement('li');
+    taskElement.id = `task-${task.id}`;
+    taskElement.className = 'task-item';
+    taskElement.dataset.taskId = task.id;
+
+    if (task.completed) {
+        taskElement.classList.add('task-item--completed');
+    }
+
+    const completedCheckbox = document.createElement('input');
+    completedCheckbox.className = 'task-item__checkbox';
+    completedCheckbox.type = 'checkbox';
+    completedCheckbox.checked = task.completed;
+    completedCheckbox.setAttribute(
+        'aria-label',
+        `Отметить задачу «${task.title}» как выполненную`,
+    );
+
+    const taskContent = document.createElement('div');
+    taskContent.className = 'task-item__content';
+
+    const taskTitle = document.createElement('h3');
+    taskTitle.className = 'task-item__title';
+    taskTitle.textContent = task.title;
+
+    const taskDate = document.createElement('time');
+    taskDate.className = 'task-item__date';
+    taskDate.dateTime = task.date;
+    taskDate.textContent = `Срок: ${task.date}`;
+
+    taskContent.append(taskTitle, taskDate);
+
+    const actions = document.createElement('div');
+    actions.className = 'task-item__actions';
+
+    const editButton = document.createElement('button');
+    editButton.className = 'button task-item__edit-button';
+    editButton.type = 'button';
+    editButton.dataset.action = 'edit';
+    editButton.textContent = 'Редактировать';
+
+    const deleteButton = document.createElement('button');
+    deleteButton.className = 'button task-item__delete-button';
+    deleteButton.type = 'button';
+    deleteButton.dataset.action = 'delete';
+    deleteButton.textContent = 'Удалить';
+
+    actions.append(editButton, deleteButton);
+    taskElement.append(completedCheckbox, taskContent, actions);
+
+    return taskElement;
+}
