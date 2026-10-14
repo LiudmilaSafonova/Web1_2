@@ -249,4 +249,30 @@ function renderTasks() {
     elements.emptyMessage.hidden = tasks.length > 0;
 }
 
+function handleTaskFormSubmit(event) {
+    event.preventDefault();
+
+    const title = elements.titleInput.value.trim();
+    const date = elements.dateInput.value;
+
+    if (!title || !date) {
+        return;
+    }
+
+    const newTask = {
+        id: Date.now(),
+        title,
+        date,
+        completed: false,
+    };
+
+    tasks.push(newTask);
+    renderTasks();
+
+    elements.taskForm.reset();
+    elements.titleInput.focus();
+}
+
+elements.taskForm.addEventListener('submit', handleTaskFormSubmit);
+
 renderTasks();
