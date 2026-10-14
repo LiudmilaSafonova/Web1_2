@@ -121,6 +121,11 @@ select {
     list-style: none;
 }
 
+.task-item--completed .task-item__title {
+    color: #777777;
+    text-decoration: line-through;
+}
+
 @media (max-width: 520px) {
     body {
         padding: 16px 10px;

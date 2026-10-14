@@ -201,6 +201,9 @@ function createTaskElement(task) {
         'aria-label',
         `Отметить задачу «${task.title}» как выполненную`,
     );
+    completedCheckbox.addEventListener('change', () => {
+        changeTaskCompleted(task, completedCheckbox.checked);
+    });
 
     const taskContent = document.createElement('div');
     taskContent.className = 'task-item__content';
@@ -274,5 +277,10 @@ function handleTaskFormSubmit(event) {
 }
 
 elements.taskForm.addEventListener('submit', handleTaskFormSubmit);
+
+function changeTaskCompleted(task, completed) {
+    task.completed = completed;
+    renderTasks();
+}
 
 renderTasks();
