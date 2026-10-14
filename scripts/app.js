@@ -227,6 +227,9 @@ function createTaskElement(task) {
     editButton.type = 'button';
     editButton.dataset.action = 'edit';
     editButton.textContent = 'Редактировать';
+    editButton.addEventListener('click', () => {
+        startTaskEditing(task, taskElement);
+    });
 
     const deleteButton = document.createElement('button');
     deleteButton.className = 'button task-item__delete-button';
@@ -288,6 +291,74 @@ function changeTaskCompleted(task, completed) {
 function deleteTask(taskId) {
     tasks = tasks.filter((task) => task.id !== taskId);
     renderTasks();
+}
+
+function startTaskEditing(task, taskElement) {
+    const editForm = document.createElement('form');
+    editForm.className = 'task-edit-form';
+
+    const titleLabel = document.createElement('label');
+    titleLabel.setAttribute('for', `edit-title-${task.id}`);
+    titleLabel.textContent = 'Название задачи';
+
+    const titleInput = document.createElement('input');
+    titleInput.id = `edit-title-${task.id}`;
+    titleInput.type = 'text';
+    titleInput.value = task.title;
+    titleInput.required = true;
+
+    const dateLabel = document.createElement('label');
+    dateLabel.setAttribute('for', `edit-date-${task.id}`);
+    dateLabel.textContent = 'Дата выполнения';
+
+    const dateInput = document.createElement('input');
+    dateInput.id = `edit-date-${task.id}`;
+    dateInput.type = 'date';
+    dateInput.value = task.date;
+    dateInput.required = true;
+
+    const formActions = document.createElement('div');
+    formActions.className = 'task-edit-form__actions';
+
+    const saveButton = document.createElement('button');
+    saveButton.className = 'button button--primary';
+    saveButton.type = 'submit';
+    saveButton.textContent = 'Сохранить';
+
+    const cancelButton = document.createElement('button');
+    cancelButton.className = 'button';
+    cancelButton.type = 'button';
+    cancelButton.textContent = 'Отмена';
+    cancelButton.addEventListener('click', renderTasks);
+
+    formActions.append(saveButton, cancelButton);
+    editForm.append(
+        titleLabel,
+        titleInput,
+        dateLabel,
+        dateInput,
+        formActions,
+    );
+
+    editForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const newTitle = titleInput.value.trim();
+        const newDate = dateInput.value;
+
+        if (!newTitle || !newDate) {
+            return;
+        }
+
+        task.title = newTitle;
+        task.date = newDate;
+        renderTasks();
+    });
+
+    taskElement.classList.add('task-item--editing');
+    taskElement.replaceChildren(editForm);
+    titleInput.focus();
+    titleInput.select();
 }
 
 renderTasks();
