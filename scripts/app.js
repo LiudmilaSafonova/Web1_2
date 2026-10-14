@@ -260,16 +260,37 @@ function createTaskElement(task) {
     return taskElement;
 }
 
+function getVisibleTasks() {
+    const searchQuery = elements.searchInput.value.trim().toLowerCase();
+
+    if (!searchQuery) {
+        return tasks;
+    }
+
+    return tasks.filter((task) =>
+        task.title.toLowerCase().includes(searchQuery),
+    );
+}
+
 function renderTasks() {
     elements.taskList.replaceChildren();
+    const visibleTasks = getVisibleTasks();
 
-    tasks.forEach((task) => {
+    visibleTasks.forEach((task) => {
         const taskElement = createTaskElement(task);
         elements.taskList.append(taskElement);
     });
 
-    elements.tasksCount.textContent = `Всего задач: ${tasks.length}`;
-    elements.emptyMessage.hidden = tasks.length > 0;
+    const searchIsActive = elements.searchInput.value.trim() !== '';
+
+    elements.tasksCount.textContent = searchIsActive
+        ? `Показано: ${visibleTasks.length} из ${tasks.length}`
+        : `Всего задач: ${tasks.length}`;
+
+    elements.emptyMessage.textContent = tasks.length === 0
+        ? 'Задач пока нет'
+        : 'По запросу ничего не найдено';
+    elements.emptyMessage.hidden = visibleTasks.length > 0;
 }
 
 function handleTaskFormSubmit(event) {
@@ -298,6 +319,7 @@ function handleTaskFormSubmit(event) {
 }
 
 elements.taskForm.addEventListener('submit', handleTaskFormSubmit);
+elements.searchInput.addEventListener('input', renderTasks);
 
 function changeTaskCompleted(task, completed) {
     task.completed = completed;
