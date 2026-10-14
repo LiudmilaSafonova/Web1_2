@@ -233,7 +233,9 @@ function createTaskElement(task) {
     deleteButton.type = 'button';
     deleteButton.dataset.action = 'delete';
     deleteButton.textContent = 'Удалить';
-
+    deleteButton.addEventListener('click', () => {
+        deleteTask(task.id);
+    });
     actions.append(editButton, deleteButton);
     taskElement.append(completedCheckbox, taskContent, actions);
 
@@ -280,6 +282,11 @@ elements.taskForm.addEventListener('submit', handleTaskFormSubmit);
 
 function changeTaskCompleted(task, completed) {
     task.completed = completed;
+    renderTasks();
+}
+
+function deleteTask(taskId) {
+    tasks = tasks.filter((task) => task.id !== taskId);
     renderTasks();
 }
 
