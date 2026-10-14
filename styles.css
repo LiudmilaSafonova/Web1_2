@@ -121,9 +121,57 @@ select {
     list-style: none;
 }
 
+.task-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid #dfe2e6;
+    border-radius: 10px;
+}
+
+.task-item__title {
+    margin: 0 0 6px;
+    font-size: 18px;
+    overflow-wrap: anywhere;
+}
+
+.task-item__date {
+    color: #5f6368;
+}
+
+.task-item__actions,
+.task-edit-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
 .task-item--completed .task-item__title {
     color: #777777;
     text-decoration: line-through;
+}
+
+.task-item--editing {
+    display: block;
+}
+
+.task-edit-form {
+    display: grid;
+    gap: 10px;
+}
+
+.task-edit-form label {
+    font-weight: 600;
+}
+
+.task-edit-form input {
+    width: 100%;
+    min-height: 42px;
+    padding: 9px 12px;
+    border: 1px solid #c7cbd1;
+    border-radius: 8px;
 }
 
 @media (max-width: 520px) {
@@ -139,5 +187,13 @@ select {
     .todo-app__controls,
     .todo-app__tasks {
         padding: 16px;
+    }
+
+    .task-item {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .task-item__actions {
+        grid-column: 2;
     }
 }

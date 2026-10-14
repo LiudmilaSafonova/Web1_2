@@ -174,14 +174,29 @@ function createAppLayout() {
 
 const elements = createAppLayout();
 
-let tasks = [
-    {
-        id: 1,
-        title: 'Изучить js',
-        date: '2026-10-15',
-        completed: false,
-    },
-];
+const TASKS_STORAGE_KEY = 'tasks';
+
+function loadTasks() {
+    const savedTasks = localStorage.getItem(TASKS_STORAGE_KEY);
+
+    if (!savedTasks) {
+        return [];
+    }
+
+    try {
+        const parsedTasks = JSON.parse(savedTasks);
+        return Array.isArray(parsedTasks) ? parsedTasks : [];
+    } catch (error) {
+        console.error('Не удалось загрузить задачи:', error);
+        return [];
+    }
+}
+
+function saveTasks() {
+    localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
+}
+
+let tasks = loadTasks();
 
 function createTaskElement(task) {
     const taskElement = document.createElement('li');
@@ -275,6 +290,7 @@ function handleTaskFormSubmit(event) {
     };
 
     tasks.push(newTask);
+    saveTasks();
     renderTasks();
 
     elements.taskForm.reset();
@@ -285,11 +301,13 @@ elements.taskForm.addEventListener('submit', handleTaskFormSubmit);
 
 function changeTaskCompleted(task, completed) {
     task.completed = completed;
+    saveTasks();
     renderTasks();
 }
 
 function deleteTask(taskId) {
     tasks = tasks.filter((task) => task.id !== taskId);
+    saveTasks();
     renderTasks();
 }
 
@@ -352,6 +370,7 @@ function startTaskEditing(task, taskElement) {
 
         task.title = newTitle;
         task.date = newDate;
+        saveTasks();
         renderTasks();
     });
 
