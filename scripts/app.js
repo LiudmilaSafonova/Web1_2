@@ -219,9 +219,7 @@ function formatTaskDate(date) {
 
 function createTaskElement(task) {
     const taskElement = document.createElement('li');
-    taskElement.id = `task-${task.id}`;
     taskElement.className = 'task-item';
-    taskElement.dataset.taskId = task.id;
     taskElement.draggable = elements.sortSelect.value === 'manual';
 
     if (taskElement.draggable) {
@@ -264,7 +262,6 @@ function createTaskElement(task) {
     const editButton = document.createElement('button');
     editButton.className = 'button task-item__edit-button';
     editButton.type = 'button';
-    editButton.dataset.action = 'edit';
     editButton.textContent = 'Редактировать';
     editButton.addEventListener('click', () => {
         startTaskEditing(task, taskElement);
@@ -273,7 +270,6 @@ function createTaskElement(task) {
     const deleteButton = document.createElement('button');
     deleteButton.className = 'button task-item__delete-button';
     deleteButton.type = 'button';
-    deleteButton.dataset.action = 'delete';
     deleteButton.textContent = 'Удалить';
     deleteButton.addEventListener('click', () => {
         deleteTask(task.id);
