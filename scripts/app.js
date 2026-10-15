@@ -197,12 +197,18 @@ function saveTasks() {
 }
 
 let tasks = loadTasks();
+let draggedTaskId = null;
 
 function createTaskElement(task) {
     const taskElement = document.createElement('li');
     taskElement.id = `task-${task.id}`;
     taskElement.className = 'task-item';
     taskElement.dataset.taskId = task.id;
+    taskElement.draggable = elements.sortSelect.value === 'manual';
+
+    if (taskElement.draggable) {
+        addDragAndDropListeners(taskElement, task);
+    }
 
     if (task.completed) {
         taskElement.classList.add('task-item--completed');
@@ -361,7 +367,97 @@ function deleteTask(taskId) {
     renderTasks();
 }
 
+function addDragAndDropListeners(taskElement, task) {
+    taskElement.addEventListener('dragstart', (event) => {
+        draggedTaskId = task.id;
+        taskElement.classList.add('task-item--dragging');
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', String(task.id));
+    });
+
+    taskElement.addEventListener('dragover', (event) => {
+        if (draggedTaskId === null || draggedTaskId === task.id) {
+            return;
+        }
+
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+
+        const taskRect = taskElement.getBoundingClientRect();
+        const insertAfter = event.clientY > taskRect.top + taskRect.height / 2;
+
+        taskElement.classList.toggle(
+            'task-item--drag-before',
+            !insertAfter,
+        );
+        taskElement.classList.toggle(
+            'task-item--drag-after',
+            insertAfter,
+        );
+    });
+
+    taskElement.addEventListener('dragleave', () => {
+        taskElement.classList.remove(
+            'task-item--drag-before',
+            'task-item--drag-after',
+        );
+    });
+
+    taskElement.addEventListener('drop', (event) => {
+        event.preventDefault();
+
+        if (draggedTaskId === null || draggedTaskId === task.id) {
+            return;
+        }
+
+        const insertAfter = taskElement.classList.contains(
+            'task-item--drag-after',
+        );
+
+        moveTask(draggedTaskId, task.id, insertAfter);
+    });
+
+    taskElement.addEventListener('dragend', () => {
+        draggedTaskId = null;
+        clearDragStyles();
+    });
+}
+
+function moveTask(draggedId, targetId, insertAfter) {
+    const draggedIndex = tasks.findIndex((task) => task.id === draggedId);
+
+    if (draggedIndex === -1) {
+        return;
+    }
+
+    const [draggedTask] = tasks.splice(draggedIndex, 1);
+    const targetIndex = tasks.findIndex((task) => task.id === targetId);
+
+    if (targetIndex === -1) {
+        tasks.splice(draggedIndex, 0, draggedTask);
+        return;
+    }
+
+    const newIndex = insertAfter ? targetIndex + 1 : targetIndex;
+    tasks.splice(newIndex, 0, draggedTask);
+
+    saveTasks();
+    renderTasks();
+}
+
+function clearDragStyles() {
+    elements.taskList.querySelectorAll('.task-item').forEach((taskElement) => {
+        taskElement.classList.remove(
+            'task-item--dragging',
+            'task-item--drag-before',
+            'task-item--drag-after',
+        );
+    });
+}
+
 function startTaskEditing(task, taskElement) {
+    taskElement.draggable = false;
+
     const editForm = document.createElement('form');
     editForm.className = 'task-edit-form';
 
