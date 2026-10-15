@@ -279,6 +279,20 @@ function getVisibleTasks() {
         visibleTasks = visibleTasks.filter((task) => task.completed);
     }
 
+    const selectedSort = elements.sortSelect.value;
+
+    if (selectedSort === 'date-ascending') {
+        visibleTasks.sort((firstTask, secondTask) =>
+            firstTask.date.localeCompare(secondTask.date),
+        );
+    }
+
+    if (selectedSort === 'date-descending') {
+        visibleTasks.sort((firstTask, secondTask) =>
+            secondTask.date.localeCompare(firstTask.date),
+        );
+    }
+
     return visibleTasks;
 }
 
@@ -333,6 +347,7 @@ function handleTaskFormSubmit(event) {
 elements.taskForm.addEventListener('submit', handleTaskFormSubmit);
 elements.searchInput.addEventListener('input', renderTasks);
 elements.filterSelect.addEventListener('change', renderTasks);
+elements.sortSelect.addEventListener('change', renderTasks);
 
 function changeTaskCompleted(task, completed) {
     task.completed = completed;
