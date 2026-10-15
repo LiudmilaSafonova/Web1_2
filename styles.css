@@ -59,6 +59,7 @@ select {
 .task-form,
 .todo-app__controls {
     display: grid;
+    min-width: 0;
     gap: 10px;
 }
 
@@ -71,6 +72,8 @@ select {
 .todo-app__controls input,
 .todo-app__controls select {
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
     min-height: 42px;
     padding: 9px 12px;
     border: 1px solid #c7cbd1;
@@ -175,6 +178,7 @@ select {
 
 .task-edit-form {
     display: grid;
+    min-width: 0;
     gap: 10px;
 }
 
@@ -184,6 +188,8 @@ select {
 
 .task-edit-form input {
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
     min-height: 42px;
     padding: 9px 12px;
     border: 1px solid #c7cbd1;
@@ -237,6 +243,15 @@ select {
 
     .task-item__actions {
         grid-column: 2;
+    }
+
+    .task-form input[type='date'],
+    .task-edit-form input[type='date'] {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        min-height: 38px;
+        padding: 7px 8px;
     }
 
     .notification {
