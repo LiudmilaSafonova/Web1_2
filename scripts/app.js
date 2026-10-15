@@ -207,6 +207,16 @@ let tasks = loadTasks();
 let draggedTaskId = null;
 let notificationTimerId;
 
+function formatTaskDate(date) {
+    const [year, month, day] = date.split('-');
+
+    if (!year || !month || !day) {
+        return date;
+    }
+
+    return `${day}-${month}-${year}`;
+}
+
 function createTaskElement(task) {
     const taskElement = document.createElement('li');
     taskElement.id = `task-${task.id}`;
@@ -244,7 +254,7 @@ function createTaskElement(task) {
     const taskDate = document.createElement('time');
     taskDate.className = 'task-item__date';
     taskDate.dateTime = task.date;
-    taskDate.textContent = `Срок: ${task.date}`;
+    taskDate.textContent = `Срок: ${formatTaskDate(task.date)}`;
 
     taskContent.append(taskTitle, taskDate);
 
