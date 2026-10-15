@@ -262,14 +262,24 @@ function createTaskElement(task) {
 
 function getVisibleTasks() {
     const searchQuery = elements.searchInput.value.trim().toLowerCase();
+    const selectedFilter = elements.filterSelect.value;
+    let visibleTasks = [...tasks];
 
-    if (!searchQuery) {
-        return tasks;
+    if (searchQuery) {
+        visibleTasks = visibleTasks.filter((task) =>
+            task.title.toLowerCase().includes(searchQuery),
+        );
     }
 
-    return tasks.filter((task) =>
-        task.title.toLowerCase().includes(searchQuery),
-    );
+    if (selectedFilter === 'active') {
+        visibleTasks = visibleTasks.filter((task) => !task.completed);
+    }
+
+    if (selectedFilter === 'completed') {
+        visibleTasks = visibleTasks.filter((task) => task.completed);
+    }
+
+    return visibleTasks;
 }
 
 function renderTasks() {
@@ -281,15 +291,17 @@ function renderTasks() {
         elements.taskList.append(taskElement);
     });
 
-    const searchIsActive = elements.searchInput.value.trim() !== '';
+    const searchOrFilterIsActive =
+        elements.searchInput.value.trim() !== '' ||
+        elements.filterSelect.value !== 'all';
 
-    elements.tasksCount.textContent = searchIsActive
+    elements.tasksCount.textContent = searchOrFilterIsActive
         ? `Показано: ${visibleTasks.length} из ${tasks.length}`
         : `Всего задач: ${tasks.length}`;
 
     elements.emptyMessage.textContent = tasks.length === 0
         ? 'Задач пока нет'
-        : 'По запросу ничего не найдено';
+        : 'По выбранным условиям ничего не найдено';
     elements.emptyMessage.hidden = visibleTasks.length > 0;
 }
 
@@ -320,6 +332,7 @@ function handleTaskFormSubmit(event) {
 
 elements.taskForm.addEventListener('submit', handleTaskFormSubmit);
 elements.searchInput.addEventListener('input', renderTasks);
+elements.filterSelect.addEventListener('change', renderTasks);
 
 function changeTaskCompleted(task, completed) {
     task.completed = completed;
