@@ -155,9 +155,15 @@ function createAppLayout() {
     taskList.className = 'task-list';
     taskList.id = 'task-list';
 
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.setAttribute('role', 'status');
+    notification.setAttribute('aria-live', 'polite');
+
     tasksSection.append(tasksTitle, tasksCount, emptyMessage, taskList);
     main.append(header, addTaskSection, controlsSection, tasksSection);
     document.body.prepend(main);
+    document.body.append(notification);
 
     return {
         taskForm,
@@ -169,6 +175,7 @@ function createAppLayout() {
         tasksCount,
         emptyMessage,
         taskList,
+        notification,
     };
 }
 
@@ -198,6 +205,7 @@ function saveTasks() {
 
 let tasks = loadTasks();
 let draggedTaskId = null;
+let notificationTimerId;
 
 function createTaskElement(task) {
     const taskElement = document.createElement('li');
@@ -325,6 +333,17 @@ function renderTasks() {
     elements.emptyMessage.hidden = visibleTasks.length > 0;
 }
 
+function showNotification(message) {
+    clearTimeout(notificationTimerId);
+
+    elements.notification.textContent = message;
+    elements.notification.classList.add('notification--visible');
+
+    notificationTimerId = setTimeout(() => {
+        elements.notification.classList.remove('notification--visible');
+    }, 2500);
+}
+
 function handleTaskFormSubmit(event) {
     event.preventDefault();
 
@@ -348,6 +367,7 @@ function handleTaskFormSubmit(event) {
 
     elements.taskForm.reset();
     elements.titleInput.focus();
+    showNotification('Задача создана');
 }
 
 elements.taskForm.addEventListener('submit', handleTaskFormSubmit);
